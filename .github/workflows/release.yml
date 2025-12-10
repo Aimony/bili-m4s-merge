@@ -125,6 +125,7 @@ jobs:
   # 发布 Release
   release:
     needs: [build-windows, build-macos, build-linux]
+    if: always() && !cancelled()
     runs-on: ubuntu-latest
     steps:
       - name: Download all artifacts
