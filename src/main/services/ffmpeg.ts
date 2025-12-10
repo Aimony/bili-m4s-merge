@@ -9,10 +9,11 @@ import { app } from 'electron'
  */
 function getFFmpegPath(): string {
   const isDev = !app.isPackaged
+  const ffmpegName = process.platform === 'win32' ? 'ffmpeg.exe' : 'ffmpeg'
   if (isDev) {
-    return join(process.cwd(), 'resources', 'ffmpeg', 'ffmpeg.exe')
+    return join(process.cwd(), 'resources', 'ffmpeg', ffmpegName)
   }
-  return join(process.resourcesPath, 'ffmpeg', 'ffmpeg.exe')
+  return join(process.resourcesPath, 'ffmpeg', ffmpegName)
 }
 
 /**
