@@ -43,6 +43,14 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      # 从 GITHUB_REF（如 refs/tags/v1.0.4）中提取版本号 1.0.4
+      # 使用 npm version 更新 package.json 中的版本号
+      # --no-git-tag-version 阻止 npm 自动创建 git tag
+      # --allow-same-version 允许版本号相同时不报错
+      # - name: Sync version from tag
+      #   run: npm version ${GITHUB_REF#refs/tags/v} --no-git-tag-version --allow-same-version
+      #   shell: bash
+
       - name: Build
         run: npm run build
 
@@ -92,6 +100,10 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      # - name: Sync version from tag
+      #   run: npm version ${GITHUB_REF#refs/tags/v} --no-git-tag-version --allow-same-version
+      #   shell: bash
+
       - name: Build
         run: npm run build
 
@@ -139,6 +151,10 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+
+      # - name: Sync version from tag
+      #   run: npm version ${GITHUB_REF#refs/tags/v} --no-git-tag-version --allow-same-version
+      #   shell: bash
 
       - name: Build
         run: npm run build
