@@ -1,89 +1,126 @@
-# B站视频合并工具 (bili-m4s-merge)
+<p align="center">
+  <img src="resources/icon.png" alt="bili-m4s-merge" width="120" />
+</p>
 
-一款跨平台桌面应用，用于将 B站缓存的 `.m4s` 视频流和音频流无损合并为 MP4 格式。
+<h1 align="center">Bilibili Video Merger</h1>
+<h3 align="center">bili-m4s-merge</h3>
 
-## 功能特性
+<p align="center">
+  <strong>🎬 Cross-platform Bilibili Cache Video Merger</strong>
+</p>
 
-- 🎬 **文件选择**: 支持拖拽或通过系统对话框选择 `.m4s` 文件
-- 🔍 **智能识别**: 自动检测并处理 B站缓存文件的非标准文件头
-- ⚡ **无损合并**: 调用 FFmpeg 进行 Codec Copy，无需转码，速度极快
-- 📁 **批量处理**: 支持选择整个 B站缓存文件夹，自动识别并配对
-- 📊 **任务管理**: 显示合并进度、实时日志输出
+<p align="center">
+  <a href="#-features">Features</a> •
+  <a href="#-quick-start">Quick Start</a> •
+  <a href="#-usage">Usage</a> •
+  <a href="#%EF%B8%8F-development">Development</a> •
+  <a href="./README_cn.md">中文</a>
+</p>
 
-## 技术栈
+<p align="center">
+  <img src="https://img.shields.io/badge/Electron-47848F?logo=electron&logoColor=white" alt="Electron" />
+  <img src="https://img.shields.io/badge/Vue-4FC08D?logo=vue.js&logoColor=white" alt="Vue 3" />
+  <img src="https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white" alt="TypeScript" />
+  <img src="https://img.shields.io/badge/Naive%20UI-18A058?logo=vue.js&logoColor=white" alt="Naive UI" />
+</p>
 
-- **Runtime**: Electron
-- **Build Tool**: Vite
-- **Frontend**: Vue 3 + TypeScript
-- **UI Framework**: Naive UI
+<p align="center">
+  <img src="resources/intro.png" alt="introduction" />
+</p>
 
-## 快速开始
+---
 
-### 1. 安装依赖
+## ✨ Features
+
+| Feature | Description |
+|---------|-------------|
+| 🎬 **File Selection** | Drag & drop or select `.m4s` files via system dialog |
+| 🔍 **Smart Detection** | Automatically handles non-standard headers in Bilibili cache files |
+| ⚡ **Lossless Merge** | Uses FFmpeg codec copy - no transcoding, blazing fast |
+| 📁 **Batch Processing** | Select entire Bilibili cache folder for auto-pairing |
+| 📊 **Task Management** | Real-time progress and log output |
+| 🌙 **Theme Switch** | Light/Dark theme with system preference support |
+
+## 🚀 Quick Start
+
+### Option 1: Download Release
+
+Go to [Releases](https://github.com/Aimony/bili-m4s-merge/releases) to download the latest version.
+
+> [!NOTE]
+> The release includes bundled FFmpeg, ready to use out of the box.
+
+### Option 2: Build from Source
+
+#### 1. Install Dependencies
 
 ```bash
 npm install
 ```
 
-### 2. 配置 FFmpeg
+#### 2. Configure FFmpeg
 
-将 `ffmpeg.exe` 放置到 `resources/ffmpeg/` 目录下。
+Place `ffmpeg.exe` in the `resources/ffmpeg/` directory.
 
-下载地址: https://www.gyan.dev/ffmpeg/builds/
+📥 Download: [ffmpeg.org](https://www.gyan.dev/ffmpeg/builds/)
 
-### 3. 启动开发服务器
+#### 3. Start Development Server
 
 ```bash
 npm run dev
 ```
 
-### 4. 构建生产版本
+#### 4. Build Production Version
 
 ```bash
 npm run build:win
 ```
 
-## 使用说明
+## 📖 Usage
 
-### 单文件模式
+### Single File Mode
 
-1. 点击「选择文件」或拖拽 `video.m4s` 和 `audio.m4s` 文件
-2. 设置输出目录和文件名
-3. 点击「开始合并」
+1. Click "Select Files" or drag & drop `video.m4s` and `audio.m4s`
+2. Set output directory and filename
+3. Click "Start Merge"
 
-### 文件夹批量模式
+### Batch Folder Mode
 
-1. 点击「选择文件夹」，选择包含 B站缓存的目录
-2. 程序会自动扫描并识别所有可合并的文件对
-3. 按需修改输出文件名
-4. 点击「开始合并」
+1. Click "Select Folder" and choose the Bilibili cache directory
+2. The app will auto-scan and pair all mergeable files
+3. Modify output filenames as needed
+4. Click "Start Merge"
 
-B站缓存目录结构示例：
+<details>
+<summary>📂 Bilibili Cache Directory Structure</summary>
+
 ```
 download/
-├─115478550814377/        # 视频ID，用作默认文件名
+├─115478550814377/        # Video ID
 │  └─c_33618005690/
-│      └─80/              # 画质
+│      └─80/              # Quality
 │          ├─video.m4s
 │          └─audio.m4s
 ```
 
-## 开发
+</details>
+
+## 🛠️ Development
 
 ```bash
-# 开发模式
+# Development mode
 npm run dev
 
-# 类型检查
+# Type check
 npm run typecheck
 
-# 代码格式化
+# Code formatting
 npm run format
 
-# 构建 Windows
+# Build for Windows
 npm run build:win
 ```
 
-## License
+## 📄 License
 
 MIT
