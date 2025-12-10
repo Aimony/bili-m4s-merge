@@ -1,4 +1,4 @@
-import { contextBridge, ipcRenderer } from 'electron'
+import { contextBridge, ipcRenderer, webUtils } from 'electron'
 import { electronAPI } from '@electron-toolkit/preload'
 import type { ScanResult } from '../shared/types'
 
@@ -38,7 +38,10 @@ const api = {
   },
 
   // 其他
-  openPath: (path: string): Promise<void> => ipcRenderer.invoke('open-path', path)
+  openPath: (path: string): Promise<void> => ipcRenderer.invoke('open-path', path),
+  
+  // 获取拖放文件的路径（用于 contextIsolation 启用时）
+  getPathForFile: (file: File): string => webUtils.getPathForFile(file)
 }
 
 // 暴露 API 到渲染进程

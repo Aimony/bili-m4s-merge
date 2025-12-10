@@ -59,9 +59,11 @@ async function handleDrop(e: DragEvent): Promise<void> {
     let hasFolder = false
 
     for (let i = 0; i < items.length; i++) {
-      const file = items[i] as File & { path?: string }
-      if (file.path) {
-        paths.push(file.path)
+      const file = items[i]
+      // 使用 webUtils.getPathForFile 获取文件路径（contextIsolation 启用时需要此方式）
+      const filePath = window.api.getPathForFile(file)
+      if (filePath) {
+        paths.push(filePath)
         // 检查是否是文件夹（通过检查 type 是否为空）
         if (file.type === '') {
           hasFolder = true

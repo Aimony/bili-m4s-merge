@@ -28,6 +28,9 @@ export interface ElectronApi {
 
   // 其他
   openPath: (path: string) => Promise<void>
+  
+  // 获取拖放文件的路径（用于 contextIsolation 启用时）
+  getPathForFile: (file: File) => string
 }
 
 declare global {
