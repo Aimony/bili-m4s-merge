@@ -1,7 +1,11 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, inject } from 'vue'
+import type { ComputedRef } from 'vue'
 import { NIcon, NButton, NSpace, NSpin } from 'naive-ui'
 import { CloudUploadOutline, FolderOpenOutline, DocumentOutline, CheckmarkCircleOutline } from '@vicons/ionicons5'
+
+// 主题
+const isDark = inject<ComputedRef<boolean>>('isDark')!
 
 // Props
 interface Props {
@@ -142,7 +146,8 @@ async function handleSelectFolder(): Promise<void> {
       :class="{ 
         'is-dragging': isDragging, 
         'is-disabled': props.disabled,
-        'has-action': lastAction 
+        'has-action': lastAction,
+        'light-theme': !isDark
       }"
       @dragenter="handleDragEnter"
       @dragleave="handleDragLeave"
@@ -282,5 +287,24 @@ async function handleSelectFolder(): Promise<void> {
 
 .action-buttons {
   margin-top: 16px;
+}
+
+/* 浅色主题样式 */
+.drop-area.light-theme {
+  border-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(0, 0, 0, 0.02);
+}
+
+.drop-area.light-theme:hover:not(.is-disabled) {
+  border-color: rgba(0, 0, 0, 0.35);
+  background-color: rgba(0, 0, 0, 0.04);
+}
+
+.drop-area.light-theme .drop-title {
+  color: rgba(0, 0, 0, 0.85);
+}
+
+.drop-area.light-theme .drop-hint {
+  color: rgba(0, 0, 0, 0.45);
 }
 </style>

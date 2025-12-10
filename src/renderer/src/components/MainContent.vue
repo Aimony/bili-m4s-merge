@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, computed } from 'vue'
+import { ref, onMounted, onUnmounted, computed, inject } from 'vue'
+import type { Ref, ComputedRef } from 'vue'
 import {
   NCard,
   NButton,
@@ -8,6 +9,7 @@ import {
   NInputGroup,
   NInputGroupLabel,
   NAlert,
+  NDropdown,
   useMessage
 } from 'naive-ui'
 import { PlayOutline, FolderOutline } from '@vicons/ionicons5'
@@ -16,6 +18,22 @@ import FileDropZone from './FileDropZone.vue'
 import TaskList from './TaskList.vue'
 import LogPanel from './LogPanel.vue'
 import type { MergeTask, ScanResult } from '../../../shared/types'
+
+// 主题相关
+const isDark = inject<ComputedRef<boolean>>('isDark')!
+const themeMode = inject<Ref<'light' | 'dark' | 'system'>>('themeMode')!
+const setTheme = inject<(mode: 'light' | 'dark' | 'system') => void>('setTheme')!
+
+// 主题切换下拉菜单选项
+const themeOptions = [
+  { label: '☀️ 浅色模式', key: 'light' },
+  { label: '🌙 深色模式', key: 'dark' },
+  { label: '💻 跟随系统', key: 'system' }
+]
+
+function handleThemeSelect(key: string) {
+  setTheme(key as 'light' | 'dark' | 'system')
+}
 
 // 消息提示 - 此组件在 NMessageProvider 内使用
 const message = useMessage()
@@ -230,9 +248,9 @@ function handleClose(): void {
 </script>
 
 <template>
-  <div class="app-container">
+  <div class="app-container" :class="{ 'light-mode': !isDark }">
     <!-- 标题栏：Mac风格 -->
-    <header class="app-header">
+    <header class="app-header" :class="{ 'light-header': !isDark }">
       <!-- Mac风格窗口控制按钮 -->
       <div class="traffic-lights">
         <button class="light close" @click="handleClose" title="关闭"></button>
@@ -244,6 +262,14 @@ function handleClose(): void {
         <h1 class="app-title">B站视频合并工具</h1>
         <span class="app-subtitle">bili-m4s-merge</span>
       </div>
+      <!-- 主题切换按钮 -->
+      <n-dropdown :options="themeOptions" @select="handleThemeSelect" trigger="click">
+        <button class="theme-btn" :title="themeMode === 'system' ? '跟随系统' : (themeMode === 'dark' ? '深色模式' : '浅色模式')">
+          <span v-if="themeMode === 'light'">☀️</span>
+          <span v-else-if="themeMode === 'dark'">🌙</span>
+          <span v-else>💻</span>
+        </button>
+      </n-dropdown>
     </header>
 
     <main class="app-content">
@@ -405,6 +431,57 @@ function handleClose(): void {
 
 .output-settings .n-input-group {
   flex: 1;
+}
+
+/* 主题切换按钮 */
+.theme-btn {
+  width: 36px;
+  height: 28px;
+  border: none;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  transition: background 0.15s;
+  -webkit-app-region: no-drag;
+}
+
+.theme-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* 亮色模式样式 */
+.light-header {
+  background: linear-gradient(135deg, #f5f5f5 0%, #e8e8ec 100%) !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08) !important;
+}
+
+.light-header .app-title {
+  color: rgba(0, 0, 0, 0.85);
+}
+
+.light-header .app-subtitle {
+  color: rgba(0, 0, 0, 0.45);
+}
+
+.light-header .theme-btn {
+  background: rgba(0, 0, 0, 0.06);
+}
+
+.light-header .theme-btn:hover {
+  background: rgba(0, 0, 0, 0.12);
+}
+
+/* 浅色模式容器 */
+.light-mode {
+  background-color: #f0f2f5 !important;
+}
+
+.light-mode .app-content {
+  background-color: #f0f2f5;
 }
 </style>
 
