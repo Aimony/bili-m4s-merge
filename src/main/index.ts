@@ -15,6 +15,8 @@ function createWindow(): void {
     minWidth: 800,
     minHeight: 600,
     show: false,
+    frame: false,
+    title: 'B站视频合并工具',
     autoHideMenuBar: true,
     ...(process.platform === 'linux' ? { icon } : {}),
     webPreferences: {
@@ -123,6 +125,27 @@ function setupIpcHandlers(): void {
   // 打开文件所在目录
   ipcMain.handle('open-path', async (_event, path: string) => {
     shell.showItemInFolder(path)
+  })
+
+  // 窗口控制
+  ipcMain.handle('window-minimize', () => {
+    mainWindow?.minimize()
+  })
+
+  ipcMain.handle('window-maximize', () => {
+    if (mainWindow?.isMaximized()) {
+      mainWindow.unmaximize()
+    } else {
+      mainWindow?.maximize()
+    }
+  })
+
+  ipcMain.handle('window-close', () => {
+    mainWindow?.close()
+  })
+
+  ipcMain.handle('window-is-maximized', () => {
+    return mainWindow?.isMaximized() ?? false
   })
 }
 

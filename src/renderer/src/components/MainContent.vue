@@ -214,13 +214,36 @@ async function handleStartMerge(): Promise<void> {
   const errorCount = tasks.value.filter((t) => t.status === 'error').length
   message.success(`处理完成: ${completedCount} 成功, ${errorCount} 失败`)
 }
+
+// 窗口控制
+function handleMinimize(): void {
+  window.api.windowMinimize()
+}
+
+function handleMaximize(): void {
+  window.api.windowMaximize()
+}
+
+function handleClose(): void {
+  window.api.windowClose()
+}
 </script>
 
 <template>
   <div class="app-container">
+    <!-- 标题栏：Mac风格 -->
     <header class="app-header">
-      <h1 class="app-title">B站视频合并工具</h1>
-      <span class="app-subtitle">bili-m4s-merge</span>
+      <!-- Mac风格窗口控制按钮 -->
+      <div class="traffic-lights">
+        <button class="light close" @click="handleClose" title="关闭"></button>
+        <button class="light minimize" @click="handleMinimize" title="最小化"></button>
+        <button class="light maximize" @click="handleMaximize" title="最大化"></button>
+      </div>
+      <!-- 标题区域（可拖动） -->
+      <div class="header-drag">
+        <h1 class="app-title">B站视频合并工具</h1>
+        <span class="app-subtitle">bili-m4s-merge</span>
+      </div>
     </header>
 
     <main class="app-content">
@@ -294,28 +317,77 @@ async function handleStartMerge(): Promise<void> {
   display: flex;
   flex-direction: column;
   height: 100vh;
-  background-color: #18181c;
+  background-color: #101014;
 }
 
 .app-header {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 16px 24px;
-  background: linear-gradient(135deg, #00a1d6 0%, #fb7299 100%);
+  padding: 0 16px;
+  height: 44px;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
   flex-shrink: 0;
+}
+
+/* Mac风格交通灯按钮 */
+.traffic-lights {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-right: 16px;
+  -webkit-app-region: no-drag;
+}
+
+.light {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.15s, transform 0.1s;
+}
+
+.light:hover {
+  opacity: 0.85;
+  transform: scale(1.1);
+}
+
+.light:active {
+  transform: scale(0.95);
+}
+
+.light.close {
+  background: #ff5f57;
+}
+
+.light.minimize {
+  background: #febc2e;
+}
+
+.light.maximize {
+  background: #28c840;
+}
+
+.header-drag {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 100%;
+  -webkit-app-region: drag;
 }
 
 .app-title {
   margin: 0;
-  font-size: 20px;
-  font-weight: 600;
-  color: #fff;
+  font-size: 14px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.9);
 }
 
 .app-subtitle {
-  font-size: 13px;
-  color: rgba(255, 255, 255, 0.8);
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.4);
 }
 
 .app-content {

@@ -31,6 +31,12 @@ export interface ElectronApi {
   
   // 获取拖放文件的路径（用于 contextIsolation 启用时）
   getPathForFile: (file: File) => string
+
+  // 窗口控制
+  windowMinimize: () => Promise<void>
+  windowMaximize: () => Promise<void>
+  windowClose: () => Promise<void>
+  windowIsMaximized: () => Promise<boolean>
 }
 
 declare global {

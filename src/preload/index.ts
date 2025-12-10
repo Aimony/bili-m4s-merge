@@ -41,7 +41,13 @@ const api = {
   openPath: (path: string): Promise<void> => ipcRenderer.invoke('open-path', path),
   
   // 获取拖放文件的路径（用于 contextIsolation 启用时）
-  getPathForFile: (file: File): string => webUtils.getPathForFile(file)
+  getPathForFile: (file: File): string => webUtils.getPathForFile(file),
+
+  // 窗口控制
+  windowMinimize: (): Promise<void> => ipcRenderer.invoke('window-minimize'),
+  windowMaximize: (): Promise<void> => ipcRenderer.invoke('window-maximize'),
+  windowClose: (): Promise<void> => ipcRenderer.invoke('window-close'),
+  windowIsMaximized: (): Promise<boolean> => ipcRenderer.invoke('window-is-maximized')
 }
 
 // 暴露 API 到渲染进程
