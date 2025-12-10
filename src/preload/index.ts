@@ -1,12 +1,47 @@
-import { contextBridge } from 'electron'
+import { contextBridge, ipcRenderer } from 'electron'
 import { electronAPI } from '@electron-toolkit/preload'
+import type { ScanResult } from '../shared/types'
 
-// Custom APIs for renderer
-const api = {}
+// 自定义 API
+const api = {
+  // 文件选择
+  selectFiles: (): Promise<string[]> => ipcRenderer.invoke('select-files'),
+  selectFolder: (): Promise<string | null> => ipcRenderer.invoke('select-folder'),
+  selectOutputDir: (): Promise<string | null> => ipcRenderer.invoke('select-output-dir'),
+  getDesktopPath: (): Promise<string> => ipcRenderer.invoke('get-desktop-path'),
 
-// Use `contextBridge` APIs to expose Electron APIs to
-// renderer only if context isolation is enabled, otherwise
-// just add to the DOM global.
+  // 文件扫描与验证
+  scanFolder: (folderPath: string): Promise<ScanResult[]> =>
+    ipcRenderer.invoke('scan-folder', folderPath),
+  validateM4s: (filePath: string): Promise<boolean> =>
+    ipcRenderer.invoke('validate-m4s', filePath),
+  generateOutputName: (): Promise<string> => ipcRenderer.invoke('generate-output-name'),
+
+  // FFmpeg
+  checkFFmpeg: (): Promise<boolean> => ipcRenderer.invoke('check-ffmpeg'),
+  mergeM4s: (
+    taskId: string,
+    videoPath: string,
+    audioPath: string,
+    outputPath: string
+  ): Promise<{ success: boolean; error?: string }> =>
+    ipcRenderer.invoke('merge-m4s', taskId, videoPath, audioPath, outputPath),
+
+  // 事件监听
+  onMergeProgress: (callback: (data: { taskId: string; progress: number }) => void) => {
+    ipcRenderer.on('merge-progress', (_event, data) => callback(data))
+    return () => ipcRenderer.removeAllListeners('merge-progress')
+  },
+  onMergeLog: (callback: (data: { taskId: string; message: string }) => void) => {
+    ipcRenderer.on('merge-log', (_event, data) => callback(data))
+    return () => ipcRenderer.removeAllListeners('merge-log')
+  },
+
+  // 其他
+  openPath: (path: string): Promise<void> => ipcRenderer.invoke('open-path', path)
+}
+
+// 暴露 API 到渲染进程
 if (process.contextIsolated) {
   try {
     contextBridge.exposeInMainWorld('electron', electronAPI)
@@ -20,3 +55,4 @@ if (process.contextIsolated) {
   // @ts-ignore (define in dts)
   window.api = api
 }
+

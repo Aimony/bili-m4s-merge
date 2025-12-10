@@ -23,13 +23,16 @@
   "dependencies": {
     "@electron-toolkit/preload": "^3.0.2",
     "@electron-toolkit/utils": "^4.0.0",
-    "naive-ui": "^2.43.2"
+    "@vicons/ionicons5": "^0.13.0",
+    "naive-ui": "^2.43.2",
+    "path-browserify": "^1.0.1"
   },
   "devDependencies": {
     "@electron-toolkit/eslint-config-prettier": "3.0.0",
     "@electron-toolkit/eslint-config-ts": "^3.1.0",
     "@electron-toolkit/tsconfig": "^2.0.0",
     "@types/node": "^22.19.1",
+    "@types/path-browserify": "^1.0.3",
     "@vitejs/plugin-vue": "^6.0.2",
     "electron": "^39.2.6",
     "electron-builder": "^26.0.12",
